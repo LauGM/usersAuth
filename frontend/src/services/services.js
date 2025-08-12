@@ -42,6 +42,7 @@ export const loginUser = async (user) => {
             const errorMessage = data.message || response.statusText;
             throw new Error(errorMessage);
         }
+        sessionStorage.setItem("token", data.token);
         return data;
     } catch (error) {
         // Re-throw the error to be handled by the calling component
@@ -61,10 +62,16 @@ export const askProtectedRoute = async () => {
         const data = await response.json();
         
         if (!response.ok) {
-            // Use server error message if available, fallback to status text
-            const errorMessage = data.message || response.statusText;
-            throw new Error(errorMessage);
+            if (response.status === 401) {
+                sessionStorage.removeItem("token"); // Borrar el token de la sesión en caso de error de autenticaciónItem("token");
+                throw new Error('Protected route access failed. Please try again.');
+            }else{
+                // Use server error message if available, fallback to status text
+                const errorMessage = data.message || response.statusText;
+                throw new Error(errorMessage);
+            }
         }
+        console.log(data);
         return data;
     } catch (error) {
         // Re-throw the error to be handled by the calling component
@@ -88,6 +95,8 @@ export const logoutUser = async () => {
             const errorMessage = data.message || response.statusText;
             throw new Error(errorMessage);
         }
+
+        sessionStorage.removeItem("token");
         return data;
     } catch (error) {
         // Re-throw the error to be handled by the calling component

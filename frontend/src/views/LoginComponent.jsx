@@ -27,7 +27,6 @@ const Login = () => {
         console.log(user);
         loginUser(user).then((data) => {
             console.log(data);
-            sessionStorage.setItem("token", data.token);
             toast.success(data.message, {
                 position: "top-right",
                 autoClose: 3000,
@@ -38,7 +37,9 @@ const Login = () => {
                     background: "linear-gradient(to right, #00b09b, #96c93d)",
                 },
             });
-            navigate("/dashboard");
+            setTimeout(() => {
+              navigate("/dashboard");
+            }, 4000);
         }).catch((error) => {
             toast.error(error.message, {
                 position: "top-right",

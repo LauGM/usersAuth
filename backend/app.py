@@ -144,7 +144,10 @@ def login_user():
 # 3. agregar Authorization: Bearer <token>
 def protected():
     current_user = get_jwt_identity()
+    print(current_user)
     return jsonify({"message": f"Hello, {current_user}!"}), 200
+
+
 
 @app.route('/logout', methods=['POST'])
 @jwt_required()

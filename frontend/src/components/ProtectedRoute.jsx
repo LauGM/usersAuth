@@ -7,3 +7,5 @@ const ProtectedRoute = () => {
 };
 
 export default ProtectedRoute;
+
+/* Outlet: Renderiza el contenido de la ruta protegida */
