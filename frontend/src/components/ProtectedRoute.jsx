@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { isTokenValid } from '../services/tokenValidation';
 
 const ProtectedRoute = () => {
-    const isAuthenticated = sessionStorage.getItem('token') !== null;
+    const isAuthenticated = isTokenValid();
 
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };

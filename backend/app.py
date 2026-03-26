@@ -96,7 +96,7 @@ def register_user():
 def login_user():
     """
     Ruta para el inicio de sesión de usuarios.
-    Espera un JSON con 'username' y 'password'.
+    Espera un JSON con 'user_name' y 'password'.
     Verifica las credenciales y, si son válidas, genera un JWT.
     """
     data = request.get_json()
@@ -121,7 +121,7 @@ def login_user():
         # El payload contiene información del usuario y la fecha de expiración
         # Puedes añadir más datos no sensibles al payload si es necesario
        
-        # Verificar las credenciales...
+        # Verificar las credenciales usando JWT_SECRET_KEY como firma
         token = create_access_token(identity=user_name)
         expires_in = int(app.config['JWT_ACCESS_TOKEN_EXPIRES'].total_seconds())
         return jsonify({
@@ -136,7 +136,8 @@ def login_user():
         return jsonify({"message": "An error occurred during login"}), 500 # 500 Internal Server Error 
 
 @app.route('/protected', methods=['GET'])
-@jwt_required()
+# cuando llega una solicitud a la ruta /protected @jwt_required() verifica que la firma del token sea valida usando JWT_SECRET_KEY
+@jwt_required() 
 # solo usuarios autenticados pueden acceder a esta ruta hay que agregar headers Authorization: Bearer <token> al GET
 # para probarlo en postman
 # 1. ir a la pestaña GET
